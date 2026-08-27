@@ -1,8 +1,11 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "football-predictions",
+  "main": "src/worker.ts",
   "compatibility_date": "2026-08-27",
+
   "assets": {
-    "directory": "./dist"
+    "directory": "./dist",
+    "binding": "ASSETS"
   }
 }
