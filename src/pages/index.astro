@@ -1,28 +1,25 @@
 ---
-const predictions = [
+const leagues = [
+  'Premier League',
+  'La Liga',
+  'Serie A',
+  'Bundesliga',
+  'Ligue 1',
+  'Champions League'
+];
+
+const markets = [
   {
-    home: 'Manchester City',
-    away: 'Liverpool',
-    competition: 'Premier League',
-    time: '20:00',
-    result: '1',
-    resultProbability: '58%',
-    goals: 'Over 2.5',
-    goalsProbability: '64%',
-    btts: 'Yes',
-    bttsProbability: '61%'
+    title: 'Match Result',
+    description: '1X2 probability'
   },
   {
-    home: 'Real Madrid',
-    away: 'Barcelona',
-    competition: 'La Liga',
-    time: '20:00',
-    result: '1',
-    resultProbability: '52%',
-    goals: 'Over 2.5',
-    goalsProbability: '69%',
-    btts: 'Yes',
-    bttsProbability: '66%'
+    title: 'Over / Under',
+    description: 'Goal totals'
+  },
+  {
+    title: 'BTTS',
+    description: 'Both teams to score'
   }
 ];
 ---
@@ -34,109 +31,223 @@ const predictions = [
     <meta name="viewport" content="width=device-width" />
     <meta
       name="description"
-      content="Football predictions, match statistics and form analysis."
+      content="MatchMetric provides football statistics, match analysis and probability-based predictions."
     />
-    <title>Football Predictions & Statistics</title>
+    <meta name="robots" content="index, follow" />
+    <title>MatchMetric — Football Statistics & Predictions</title>
   </head>
 
   <body>
     <header class="site-header">
       <div class="container header-inner">
-        <a href="/" class="brand">FOOTBALL<span>FORM</span></a>
+        <a href="/" class="brand" aria-label="MatchMetric home">
+          <span class="brand-mark">M</span>
+          <span class="brand-name">MatchMetric</span>
+        </a>
 
-        <nav>
-          <a href="/">Predictions</a>
-          <a href="/">Matches</a>
-          <a href="/">Leagues</a>
-          <a href="/">Teams</a>
+        <nav aria-label="Main navigation">
+          <a href="#predictions">Predictions</a>
+          <a href="#matches">Matches</a>
+          <a href="#leagues">Leagues</a>
+          <a href="#methodology">Methodology</a>
         </nav>
+
+        <button class="menu-button" aria-label="Open navigation">
+          <span></span>
+          <span></span>
+        </button>
       </div>
     </header>
 
     <main>
       <section class="hero">
-        <div class="container">
-          <p class="eyebrow">FOOTBALL PREDICTIONS & STATISTICS</p>
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow">FOOTBALL DATA & MATCH ANALYSIS</p>
 
-          <h1>
-            Today's football<br />
-            predictions
-          </h1>
+            <h1>
+              The numbers<br />
+              behind the match.
+            </h1>
 
-          <p class="intro">
-            Statistical predictions for football matches around the world,
-            including match results, goals and BTTS.
-          </p>
+            <p class="hero-description">
+              Football statistics, team form and probability-based match
+              predictions — presented clearly, without the noise.
+            </p>
+
+            <div class="hero-actions">
+              <a class="button button-primary" href="#predictions">
+                Explore predictions
+              </a>
+
+              <a class="button button-secondary" href="#methodology">
+                How it works
+              </a>
+            </div>
+          </div>
+
+          <div class="hero-panel">
+            <div class="panel-header">
+              <span>DATA STATUS</span>
+              <span class="status">
+                <i></i>
+                BUILDING
+              </span>
+            </div>
+
+            <div class="panel-body">
+              <div class="metric">
+                <span>Competitions</span>
+                <strong>Coming soon</strong>
+              </div>
+
+              <div class="metric">
+                <span>Matches</span>
+                <strong>Coming soon</strong>
+              </div>
+
+              <div class="metric">
+                <span>Predictions</span>
+                <strong>Coming soon</strong>
+              </div>
+            </div>
+
+            <div class="panel-footer">
+              Live football data integration is currently being developed.
+            </div>
+          </div>
         </div>
       </section>
 
-      <section class="predictions">
+      <section class="section" id="predictions">
         <div class="container">
           <div class="section-heading">
             <div>
-              <p class="eyebrow">TODAY</p>
-              <h2>Featured predictions</h2>
+              <p class="eyebrow">PREDICTION MARKETS</p>
+              <h2>What we analyse</h2>
             </div>
-
-            <a href="/">View all matches →</a>
           </div>
 
-          <div class="match-list">
-            {predictions.map((match) => (
-              <article class="match-card">
-                <div class="match-top">
-                  <span>{match.competition}</span>
-                  <span>{match.time}</span>
+          <div class="market-grid">
+            {markets.map((market, index) => (
+              <article class="market-card">
+                <div class="market-number">
+                  0{index + 1}
                 </div>
 
-                <div class="teams">
-                  <strong>{match.home}</strong>
-                  <span>vs</span>
-                  <strong>{match.away}</strong>
+                <div>
+                  <h3>{market.title}</h3>
+                  <p>{market.description}</p>
                 </div>
 
-                <div class="markets">
-                  <div>
-                    <span>Match result</span>
-                    <strong>{match.result} <small>{match.resultProbability}</small></strong>
-                  </div>
-
-                  <div>
-                    <span>Goals</span>
-                    <strong>{match.goals} <small>{match.goalsProbability}</small></strong>
-                  </div>
-
-                  <div>
-                    <span>BTTS</span>
-                    <strong>{match.btts} <small>{match.bttsProbability}</small></strong>
-                  </div>
-                </div>
+                <span class="arrow">↗</span>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section class="why">
+      <section class="section matches-section" id="matches">
         <div class="container">
-          <div>
-            <p class="eyebrow">OUR APPROACH</p>
-            <h2>Predictions backed by football data.</h2>
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">MATCH CENTRE</p>
+              <h2>Today's matches</h2>
+            </div>
+
+            <span class="coming-label">DATA INTEGRATION IN PROGRESS</span>
           </div>
 
-          <p>
-            We analyse available match data, team form and performance
-            indicators to produce probability-based predictions. No
-            guarantees. Just the numbers behind each assessment.
-          </p>
+          <div class="empty-state">
+            <div class="empty-icon">M</div>
+
+            <h3>Match data is coming soon</h3>
+
+            <p>
+              We're connecting MatchMetric to a reliable football data source.
+              Real fixtures, results and statistics will appear here once the
+              data layer is ready.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section leagues-section" id="leagues">
+        <div class="container">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">COMPETITIONS</p>
+              <h2>Popular leagues</h2>
+            </div>
+          </div>
+
+          <div class="league-list">
+            {leagues.map((league, index) => (
+              <a href="/" class="league-row">
+                <span class="league-index">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+
+                <strong>{league}</strong>
+
+                <span class="league-arrow">→</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="methodology" id="methodology">
+        <div class="container methodology-grid">
+          <div>
+            <p class="eyebrow">OUR APPROACH</p>
+
+            <h2>
+              Football analysis built around data, not promises.
+            </h2>
+          </div>
+
+          <div class="methodology-copy">
+            <p>
+              MatchMetric is being built around football statistics,
+              historical performance and probability-based analysis.
+            </p>
+
+            <p>
+              Predictions will never be presented as guarantees. Every
+              assessment will be based on available data and clearly
+              identified as a statistical prediction.
+            </p>
+
+            <a href="/" class="text-link">
+              Read our methodology →
+            </a>
+          </div>
         </div>
       </section>
     </main>
 
     <footer>
-      <div class="container footer-inner">
-        <strong>FOOTBALLFORM</strong>
-        <span>Football predictions & statistics</span>
+      <div class="container footer-top">
+        <div>
+          <a href="/" class="footer-brand">MatchMetric</a>
+
+          <p>
+            Football statistics, predictions & match analysis.
+          </p>
+        </div>
+
+        <div class="footer-links">
+          <a href="/">About</a>
+          <a href="/">Methodology</a>
+          <a href="/">Privacy</a>
+          <a href="/">Terms</a>
+        </div>
+      </div>
+
+      <div class="container footer-bottom">
+        <span>© 2026 MatchMetric</span>
+        <span>Predictions are statistical assessments, not guarantees.</span>
       </div>
     </footer>
   </body>
@@ -147,282 +258,575 @@ const predictions = [
     box-sizing: border-box;
   }
 
+  :global(html) {
+    scroll-behavior: smooth;
+  }
+
   :global(body) {
     margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background: #f7f7f5;
+    background: #f5f5f2;
     color: #151515;
+    font-family:
+      Arial,
+      Helvetica,
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :global(a) {
+    -webkit-tap-highlight-color: transparent;
   }
 
   .container {
-    width: min(1120px, calc(100% - 32px));
+    width: min(1160px, calc(100% - 40px));
     margin: 0 auto;
   }
 
   .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.96);
     border-bottom: 1px solid #deded9;
-    background: #fff;
+    backdrop-filter: blur(10px);
   }
 
   .header-inner {
-    min-height: 68px;
+    min-height: 72px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 24px;
   }
 
   .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
     color: #111;
     text-decoration: none;
-    font-size: 19px;
-    font-weight: 800;
-    letter-spacing: -0.6px;
   }
 
-  .brand span {
-    font-weight: 400;
+  .brand-mark {
+    width: 30px;
+    height: 30px;
+    display: grid;
+    place-items: center;
+    background: #111;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 800;
+  }
+
+  .brand-name {
+    font-size: 19px;
+    font-weight: 750;
+    letter-spacing: -0.7px;
   }
 
   nav {
     display: flex;
-    gap: 24px;
+    align-items: center;
+    gap: 30px;
   }
 
-  nav a,
-  .section-heading a {
-    color: #555;
+  nav a {
+    color: #5d5d59;
     text-decoration: none;
-    font-size: 14px;
+    font-size: 13px;
+    font-weight: 600;
   }
 
-  nav a:hover,
-  .section-heading a:hover {
+  nav a:hover {
     color: #111;
   }
 
+  .menu-button {
+    display: none;
+    width: 38px;
+    height: 38px;
+    border: 1px solid #d8d8d3;
+    background: #fff;
+    padding: 9px;
+  }
+
+  .menu-button span {
+    display: block;
+    height: 1px;
+    margin: 5px 0;
+    background: #111;
+  }
+
   .hero {
-    padding: 76px 0 68px;
     background: #fff;
     border-bottom: 1px solid #deded9;
   }
 
+  .hero-grid {
+    min-height: 610px;
+    display: grid;
+    grid-template-columns: 1.25fr 0.75fr;
+    align-items: center;
+    gap: 90px;
+    padding: 85px 0;
+  }
+
   .eyebrow {
-    margin: 0 0 14px;
-    color: #777;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
+    margin: 0 0 16px;
+    color: #777773;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.7px;
   }
 
   h1 {
-    max-width: 760px;
     margin: 0;
-    font-size: clamp(44px, 7vw, 78px);
-    line-height: 0.98;
-    letter-spacing: -3px;
+    font-size: clamp(50px, 7vw, 86px);
+    line-height: 0.94;
+    letter-spacing: -4px;
+    font-weight: 800;
   }
 
-  .intro {
-    max-width: 590px;
-    margin: 25px 0 0;
-    color: #666;
-    font-size: 18px;
-    line-height: 1.6;
+  .hero-description {
+    max-width: 560px;
+    margin: 30px 0 0;
+    color: #656561;
+    font-size: 17px;
+    line-height: 1.7;
   }
 
-  .predictions {
-    padding: 60px 0;
+  .hero-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 32px;
+  }
+
+  .button {
+    min-height: 46px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .button-primary {
+    background: #151515;
+    color: #fff;
+  }
+
+  .button-secondary {
+    border: 1px solid #d7d7d2;
+    color: #333;
+    background: #fff;
+  }
+
+  .hero-panel {
+    border: 1px solid #d9d9d4;
+    background: #f7f7f4;
+  }
+
+  .panel-header,
+  .panel-footer {
+    padding: 16px 18px;
+    color: #777773;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1.3px;
+  }
+
+  .panel-header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #deded9;
+  }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .status i {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #777;
+  }
+
+  .panel-body {
+    padding: 8px 18px;
+  }
+
+  .metric {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 22px 0;
+    border-bottom: 1px solid #e3e3de;
+  }
+
+  .metric:last-child {
+    border-bottom: 0;
+  }
+
+  .metric span {
+    color: #777773;
+    font-size: 12px;
+  }
+
+  .metric strong {
+    font-size: 12px;
+  }
+
+  .panel-footer {
+    border-top: 1px solid #deded9;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 1.5;
+  }
+
+  .section {
+    padding: 82px 0;
   }
 
   .section-heading {
     display: flex;
     align-items: end;
     justify-content: space-between;
-    margin-bottom: 24px;
+    gap: 30px;
+    margin-bottom: 28px;
   }
 
   h2 {
     margin: 0;
-    font-size: 30px;
-    letter-spacing: -1px;
+    font-size: 36px;
+    line-height: 1;
+    letter-spacing: -1.7px;
   }
 
-  .match-list {
+  .market-grid {
     display: grid;
-    gap: 14px;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid #d7d7d2;
+    border-left: 1px solid #d7d7d2;
   }
 
-  .match-card {
-    padding: 24px;
-    background: #fff;
-    border: 1px solid #deded9;
-  }
-
-  .match-top {
+  .market-card {
+    position: relative;
+    min-height: 190px;
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
+    padding: 22px;
+    background: #fff;
+    border-right: 1px solid #d7d7d2;
+    border-bottom: 1px solid #d7d7d2;
+  }
+
+  .market-number {
+    color: #aaa;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+  }
+
+  .market-card h3 {
+    margin: 0 0 7px;
+    font-size: 19px;
+    letter-spacing: -0.5px;
+  }
+
+  .market-card p {
+    margin: 0;
     color: #777;
     font-size: 12px;
   }
 
-  .teams {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: center;
-    gap: 18px;
-    padding: 25px 0;
-    border-bottom: 1px solid #e8e8e3;
+  .arrow {
+    position: absolute;
+    top: 21px;
+    right: 22px;
+    color: #888;
+    font-size: 17px;
   }
 
-  .teams strong:last-child {
+  .matches-section {
+    background: #fff;
+    border-top: 1px solid #deded9;
+    border-bottom: 1px solid #deded9;
+  }
+
+  .coming-label {
+    color: #858580;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1px;
+  }
+
+  .empty-state {
+    max-width: 700px;
+    padding: 55px 30px;
+    border: 1px solid #d9d9d4;
+    background: #f7f7f4;
+    text-align: center;
+  }
+
+  .empty-icon {
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    margin: 0 auto 20px;
+    background: #151515;
+    color: #fff;
+    font-size: 17px;
+    font-weight: 800;
+  }
+
+  .empty-state h3 {
+    margin: 0;
+    font-size: 20px;
+    letter-spacing: -0.5px;
+  }
+
+  .empty-state p {
+    max-width: 520px;
+    margin: 14px auto 0;
+    color: #777;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .league-list {
+    border-top: 1px solid #d7d7d2;
+  }
+
+  .league-row {
+    min-height: 66px;
+    display: grid;
+    grid-template-columns: 60px 1fr 40px;
+    align-items: center;
+    border-bottom: 1px solid #d7d7d2;
+    color: #171717;
+    text-decoration: none;
+  }
+
+  .league-row:hover {
+    padding-left: 6px;
+  }
+
+  .league-index {
+    color: #999;
+    font-size: 10px;
+    font-weight: 800;
+  }
+
+  .league-row strong {
+    font-size: 14px;
+  }
+
+  .league-arrow {
+    color: #777;
     text-align: right;
   }
 
-  .teams span {
-    color: #999;
-    font-size: 13px;
-  }
-
-  .markets {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    padding-top: 18px;
-  }
-
-  .markets div {
-    display: flex;
-    justify-content: space-between;
-    gap: 12px;
-  }
-
-  .markets span {
-    color: #777;
-    font-size: 12px;
-  }
-
-  .markets strong {
-    font-size: 13px;
-  }
-
-  .markets small {
-    color: #777;
-    font-weight: 400;
-  }
-
-  .why {
-    padding: 65px 0;
+  .methodology {
+    padding: 95px 0;
     background: #171717;
     color: #fff;
   }
 
-  .why .container {
+  .methodology-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 70px;
+    grid-template-columns: 1fr 0.8fr;
+    gap: 110px;
   }
 
-  .why .eyebrow {
-    color: #aaa;
+  .methodology .eyebrow {
+    color: #999;
   }
 
-  .why h2 {
-    font-size: 42px;
-    max-width: 500px;
+  .methodology h2 {
+    max-width: 650px;
+    font-size: clamp(36px, 5vw, 60px);
+    line-height: 0.98;
   }
 
-  .why p:last-child {
-    margin: 0;
-    color: #bbb;
-    font-size: 17px;
-    line-height: 1.7;
+  .methodology-copy {
+    padding-top: 8px;
+  }
+
+  .methodology-copy p {
+    margin: 0 0 22px;
+    color: #b7b7b2;
+    font-size: 16px;
+    line-height: 1.75;
+  }
+
+  .text-link {
+    display: inline-block;
+    margin-top: 8px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
   }
 
   footer {
     background: #111;
-    color: #888;
+    color: #fff;
   }
 
-  .footer-inner {
-    min-height: 90px;
+  .footer-top {
+    min-height: 150px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    gap: 20px;
+    justify-content: space-between;
+    gap: 40px;
+  }
+
+  .footer-brand {
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 800;
+  }
+
+  .footer-top p {
+    margin: 8px 0 0;
+    color: #777;
     font-size: 12px;
   }
 
-  .footer-inner strong {
-    color: #fff;
-    letter-spacing: 1px;
+  .footer-links {
+    display: flex;
+    gap: 25px;
   }
 
-  @media (max-width: 700px) {
+  .footer-links a {
+    color: #aaa;
+    text-decoration: none;
+    font-size: 12px;
+  }
+
+  .footer-bottom {
+    min-height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    border-top: 1px solid #292929;
+    color: #666;
+    font-size: 10px;
+  }
+
+  @media (max-width: 760px) {
+    .container {
+      width: min(100% - 28px, 1160px);
+    }
+
     .header-inner {
-      min-height: 58px;
+      min-height: 62px;
     }
 
     nav {
       display: none;
     }
 
-    .hero {
-      padding: 54px 0 48px;
+    .menu-button {
+      display: block;
+    }
+
+    .hero-grid {
+      min-height: auto;
+      grid-template-columns: 1fr;
+      gap: 50px;
+      padding: 60px 0;
     }
 
     h1 {
-      font-size: 48px;
-      letter-spacing: -2px;
+      font-size: 52px;
+      letter-spacing: -2.7px;
     }
 
-    .intro {
-      font-size: 16px;
+    .hero-description {
+      font-size: 15px;
     }
 
-    .predictions {
-      padding: 45px 0;
+    .hero-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .button {
+      width: 100%;
+    }
+
+    .section {
+      padding: 58px 0;
     }
 
     .section-heading {
-      align-items: start;
-      gap: 20px;
-    }
-
-    .section-heading a {
-      display: none;
+      display: block;
     }
 
     h2 {
-      font-size: 26px;
+      font-size: 30px;
     }
 
-    .match-card {
-      padding: 18px;
+    .section-heading .coming-label {
+      display: block;
+      margin-top: 14px;
     }
 
-    .markets {
+    .market-grid {
       grid-template-columns: 1fr;
-      gap: 10px;
     }
 
-    .why {
-      padding: 50px 0;
+    .market-card {
+      min-height: 150px;
     }
 
-    .why .container {
+    .empty-state {
+      padding: 40px 20px;
+    }
+
+    .league-row {
+      grid-template-columns: 40px 1fr 25px;
+    }
+
+    .methodology {
+      padding: 65px 0;
+    }
+
+    .methodology-grid {
       grid-template-columns: 1fr;
-      gap: 30px;
+      gap: 35px;
     }
 
-    .why h2 {
-      font-size: 32px;
+    .methodology h2 {
+      font-size: 38px;
     }
 
-    .footer-inner {
+    .footer-top {
+      padding: 35px 0;
       align-items: flex-start;
       flex-direction: column;
+    }
+
+    .footer-links {
+      flex-wrap: wrap;
+      gap: 18px;
+    }
+
+    .footer-bottom {
+      min-height: 75px;
+      align-items: flex-start;
       justify-content: center;
+      flex-direction: column;
+      padding: 15px 0;
     }
   }
 </style>
