@@ -1,19 +1,19 @@
 {
-  "name": "football-predictions",
-  "version": "0.1.0",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "build": "astro build",
-    "dev": "astro dev",
-    "preview": "astro preview",
-    "deploy": "bun run build && wrangler deploy"
-  },
-  "dependencies": {
-    "@astrojs/cloudflare": "latest",
-    "astro": "latest"
-  },
-  "devDependencies": {
-    "wrangler": "latest"
-  }
+"name": "football-predictions",
+"version": "0.1.0",
+"private": true,
+"type": "module",
+"scripts": {
+"build": "astro build",
+"dev": "astro dev",
+"preview": "astro preview",
+"deploy": "bun run build && wrangler deploy"
+},
+"dependencies": {
+"astro": "7.2.9",
+"@astrojs/cloudflare": "latest"
+},
+"devDependencies": {
+"wrangler": "latest"
+}
 }
