@@ -1,1 +1,749 @@
+---
+const code = Astro.params.code?.toUpperCase() ?? '';
 
+const competitions: Record<
+  string,
+  {
+    name: string;
+    country: string;
+  }
+> = {
+  PL: {
+    name: 'Premier League',
+    country: 'England'
+  },
+  ELC: {
+    name: 'Championship',
+    country: 'England'
+  },
+  PD: {
+    name: 'Primera Division',
+    country: 'Spain'
+  },
+  SA: {
+    name: 'Serie A',
+    country: 'Italy'
+  },
+  BL1: {
+    name: 'Bundesliga',
+    country: 'Germany'
+  },
+  FL1: {
+    name: 'Ligue 1',
+    country: 'France'
+  },
+  DED: {
+    name: 'Eredivisie',
+    country: 'Netherlands'
+  },
+  PPL: {
+    name: 'Primeira Liga',
+    country: 'Portugal'
+  },
+  BSA: {
+    name: 'Campeonato Brasileiro Série A',
+    country: 'Brazil'
+  },
+  CL: {
+    name: 'UEFA Champions League',
+    country: 'Europe'
+  },
+  CLI: {
+    name: 'Copa Libertadores',
+    country: 'South America'
+  }
+};
+
+const competition = competitions[code];
+
+if (!competition) {
+  return new Response(null, {
+    status: 404
+  });
+}
+
+const apiUrl =
+  `https://football-predictions.mainnewz247.workers.dev/api/competitions/${code}/matches`;
+
+let matches: any[] = [];
+let apiError = false;
+
+try {
+  const response = await fetch(apiUrl);
+
+  if (response.ok) {
+    const data = await response.json();
+    matches = data.matches ?? [];
+  } else {
+    apiError = true;
+  }
+} catch {
+  apiError = true;
+}
+
+const upcomingMatches = matches
+  .filter((match) => match.status === 'SCHEDULED' || match.status === 'TIMED')
+  .slice(0, 10);
+
+const recentMatches = matches
+  .filter(
+    (match) =>
+      match.status === 'FINISHED' ||
+      match.status === 'IN_PLAY' ||
+      match.status === 'PAUSED'
+  )
+  .slice(0, 10);
+
+function formatDate(date: string) {
+  return new Intl.DateTimeFormat('en-GB', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric'
+  }).format(new Date(date));
+}
+
+function formatTime(date: string) {
+  return new Intl.DateTimeFormat('en-GB', {
+    hour: '2-digit',
+    minute: '2-digit'
+  }).format(new Date(date));
+}
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta
+      name="viewport"
+      content="width=device-width"
+    />
+
+    <meta
+      name="description"
+      content={`${competition.name} football fixtures, results, statistics and match analysis on MatchMetric.`}
+    />
+
+    <meta
+      name="robots"
+      content="index, follow"
+    />
+
+    <title>
+      {competition.name} — Fixtures, Results & Statistics | MatchMetric
+    </title>
+  </head>
+
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a
+          href="/"
+          class="brand"
+          aria-label="MatchMetric home"
+        >
+          <span class="brand-mark">M</span>
+          <span class="brand-name">MatchMetric</span>
+        </a>
+
+        <nav aria-label="Main navigation">
+          <a href="/">Home</a>
+          <a href="/#predictions">Predictions</a>
+          <a href="/#matches">Matches</a>
+          <a href="/#leagues">Leagues</a>
+          <a href="/#methodology">Methodology</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="league-hero">
+        <div class="container">
+          <a
+            href="/"
+            class="back-link"
+          >
+            ← Back to MatchMetric
+          </a>
+
+          <p class="eyebrow">
+            {competition.country.toUpperCase()} · COMPETITION
+          </p>
+
+          <h1>{competition.name}</h1>
+
+          <p class="intro">
+            Fixtures, recent results and football statistics for
+            the {competition.name}.
+          </p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">
+                FIXTURES
+              </p>
+
+              <h2>Upcoming matches</h2>
+            </div>
+          </div>
+
+          {
+            apiError ? (
+              <div class="notice">
+                <strong>Match data temporarily unavailable.</strong>
+                <p>
+                  The data service could not be reached. Please try
+                  again shortly.
+                </p>
+              </div>
+            ) : upcomingMatches.length > 0 ? (
+              <div class="match-list">
+                {upcomingMatches.map((match) => (
+                  <article class="match-row">
+                    <div class="match-date">
+                      <strong>{formatDate(match.utcDate)}</strong>
+                      <span>{formatTime(match.utcDate)}</span>
+                    </div>
+
+                    <div class="teams">
+                      <strong>
+                        {match.homeTeam?.name ?? 'Home team'}
+                      </strong>
+
+                      <span>vs</span>
+
+                      <strong>
+                        {match.awayTeam?.name ?? 'Away team'}
+                      </strong>
+                    </div>
+
+                    <div class="match-status">
+                      {match.status === 'TIMED'
+                        ? 'Scheduled'
+                        : 'Upcoming'}
+                    </div>
+                  </article>
+                ))}
+              </div>
+            ) : (
+              <div class="notice">
+                <strong>No upcoming matches found.</strong>
+                <p>
+                  There are currently no upcoming fixtures available
+                  for this competition.
+                </p>
+              </div>
+            )
+          }
+        </div>
+      </section>
+
+      <section class="section results-section">
+        <div class="container">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">
+                RESULTS
+              </p>
+
+              <h2>Recent results</h2>
+            </div>
+          </div>
+
+          {
+            apiError ? (
+              <div class="notice">
+                Match results are temporarily unavailable.
+              </div>
+            ) : recentMatches.length > 0 ? (
+              <div class="match-list">
+                {recentMatches.map((match) => (
+                  <article class="match-row result-row">
+                    <div class="match-date">
+                      <strong>{formatDate(match.utcDate)}</strong>
+                    </div>
+
+                    <div class="teams">
+                      <strong>
+                        {match.homeTeam?.name ?? 'Home team'}
+                      </strong>
+
+                      <span class="score">
+                        {match.score?.fullTime?.home ?? '-'}
+                        {' '}
+                        —
+                        {' '}
+                        {match.score?.fullTime?.away ?? '-'}
+                      </span>
+
+                      <strong>
+                        {match.awayTeam?.name ?? 'Away team'}
+                      </strong>
+                    </div>
+
+                    <div class="match-status">
+                      Finished
+                    </div>
+                  </article>
+                ))}
+              </div>
+            ) : (
+              <div class="notice">
+                <strong>No recent results found.</strong>
+                <p>
+                  Recent results will appear here when they are
+                  available from the data source.
+                </p>
+              </div>
+            )
+          }
+        </div>
+      </section>
+
+      <section class="analysis-section">
+        <div class="container analysis-grid">
+          <div>
+            <p class="eyebrow">
+              MATCHMETRIC ANALYSIS
+            </p>
+
+            <h2>
+              Statistics first. Predictions second.
+            </h2>
+          </div>
+
+          <div class="analysis-copy">
+            <p>
+              MatchMetric will analyse historical results, team
+              form and scoring patterns before producing
+              probability-based match assessments.
+            </p>
+
+            <p>
+              The prediction engine is being developed separately
+              from the data layer so that calculations remain
+              transparent and can be improved over time.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container footer-top">
+        <div>
+          <a
+            href="/"
+            class="footer-brand"
+          >
+            MatchMetric
+          </a>
+
+          <p>
+            Football statistics, predictions & match analysis.
+          </p>
+        </div>
+
+        <div class="footer-links">
+          <a href="/about">About</a>
+          <a href="/methodology">Methodology</a>
+          <a href="/privacy">Privacy</a>
+          <a href="/terms">Terms</a>
+          <a href="/contact">Contact</a>
+        </div>
+      </div>
+
+      <div class="container footer-bottom">
+        <span>© 2026 MatchMetric</span>
+
+        <span>
+          Predictions are statistical assessments, not guarantees.
+        </span>
+
+        <span>
+          Data provided by football-data.org
+        </span>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style>
+  :global(*) {
+    box-sizing: border-box;
+  }
+
+  :global(body) {
+    margin: 0;
+    background: #f5f5f2;
+    color: #151515;
+    font-family:
+      Arial,
+      Helvetica,
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :global(a) {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .container {
+    width: min(1160px, calc(100% - 40px));
+    margin: 0 auto;
+  }
+
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.96);
+    border-bottom: 1px solid #deded9;
+    backdrop-filter: blur(10px);
+  }
+
+  .header-inner {
+    min-height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: #111;
+    text-decoration: none;
+  }
+
+  .brand-mark {
+    width: 30px;
+    height: 30px;
+    display: grid;
+    place-items: center;
+    background: #111;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 800;
+  }
+
+  .brand-name {
+    font-size: 19px;
+    font-weight: 750;
+    letter-spacing: -0.7px;
+  }
+
+  nav {
+    display: flex;
+    gap: 30px;
+  }
+
+  nav a {
+    color: #5d5d59;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  nav a:hover {
+    color: #111;
+  }
+
+  .league-hero {
+    padding: 70px 0 65px;
+    background: #fff;
+    border-bottom: 1px solid #deded9;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 45px;
+    color: #777;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .eyebrow {
+    margin: 0 0 15px;
+    color: #777773;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.7px;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(44px, 7vw, 76px);
+    line-height: 0.95;
+    letter-spacing: -3.5px;
+  }
+
+  .intro {
+    max-width: 620px;
+    margin: 25px 0 0;
+    color: #686864;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  .section {
+    padding: 75px 0;
+  }
+
+  .results-section {
+    background: #fff;
+    border-top: 1px solid #deded9;
+    border-bottom: 1px solid #deded9;
+  }
+
+  .section-heading {
+    margin-bottom: 28px;
+  }
+
+  h2 {
+    margin: 0;
+    font-size: 34px;
+    line-height: 1;
+    letter-spacing: -1.5px;
+  }
+
+  .match-list {
+    border-top: 1px solid #d7d7d2;
+  }
+
+  .match-row {
+    min-height: 88px;
+    display: grid;
+    grid-template-columns: 150px 1fr 100px;
+    align-items: center;
+    gap: 25px;
+    border-bottom: 1px solid #d7d7d2;
+  }
+
+  .match-date {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .match-date strong {
+    font-size: 12px;
+  }
+
+  .match-date span {
+    color: #777;
+    font-size: 11px;
+  }
+
+  .teams {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .teams strong {
+    font-size: 14px;
+  }
+
+  .teams > span {
+    color: #999;
+    font-size: 11px;
+  }
+
+  .teams .score {
+    min-width: 55px;
+    color: #111;
+    font-size: 14px;
+    font-weight: 800;
+    text-align: center;
+  }
+
+  .match-status {
+    color: #777;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    text-align: right;
+    text-transform: uppercase;
+  }
+
+  .notice {
+    max-width: 720px;
+    padding: 28px;
+    border: 1px solid #d9d9d4;
+    background: #f7f7f4;
+  }
+
+  .notice strong {
+    font-size: 14px;
+  }
+
+  .notice p {
+    margin: 10px 0 0;
+    color: #777;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .analysis-section {
+    padding: 90px 0;
+    background: #171717;
+    color: #fff;
+  }
+
+  .analysis-grid {
+    display: grid;
+    grid-template-columns: 1fr 0.8fr;
+    gap: 100px;
+  }
+
+  .analysis-section .eyebrow {
+    color: #999;
+  }
+
+  .analysis-section h2 {
+    max-width: 650px;
+    font-size: clamp(36px, 5vw, 58px);
+    line-height: 0.98;
+  }
+
+  .analysis-copy p {
+    margin: 0 0 22px;
+    color: #b7b7b2;
+    font-size: 15px;
+    line-height: 1.75;
+  }
+
+  footer {
+    background: #111;
+    color: #fff;
+  }
+
+  .footer-top {
+    min-height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+  }
+
+  .footer-brand {
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 800;
+  }
+
+  .footer-top p {
+    margin: 8px 0 0;
+    color: #777;
+    font-size: 12px;
+  }
+
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+  }
+
+  .footer-links a {
+    color: #aaa;
+    text-decoration: none;
+    font-size: 12px;
+  }
+
+  .footer-bottom {
+    min-height: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    border-top: 1px solid #292929;
+    color: #666;
+    font-size: 10px;
+  }
+
+  @media (max-width: 760px) {
+    .container {
+      width: min(100% - 28px, 1160px);
+    }
+
+    .header-inner {
+      min-height: 62px;
+    }
+
+    nav {
+      display: none;
+    }
+
+    .league-hero {
+      padding: 50px 0;
+    }
+
+    .back-link {
+      margin-bottom: 35px;
+    }
+
+    h1 {
+      font-size: 48px;
+      letter-spacing: -2.5px;
+    }
+
+    .section {
+      padding: 55px 0;
+    }
+
+    h2 {
+      font-size: 30px;
+    }
+
+    .match-row {
+      grid-template-columns: 1fr;
+      gap: 10px;
+      padding: 20px 0;
+    }
+
+    .match-date {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+    .teams {
+      flex-wrap: wrap;
+    }
+
+    .match-status {
+      text-align: left;
+    }
+
+    .analysis-section {
+      padding: 65px 0;
+    }
+
+    .analysis-grid {
+      grid-template-columns: 1fr;
+      gap: 35px;
+    }
+
+    .footer-top {
+      padding: 35px 0;
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .footer-bottom {
+      min-height: auto;
+      align-items: flex-start;
+      flex-direction: column;
+      padding: 18px 0;
+      line-height: 1.6;
+    }
+  }
+</style>
