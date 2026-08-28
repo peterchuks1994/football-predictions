@@ -1,25 +1,78 @@
 ---
 const leagues = [
-  'Premier League',
-  'La Liga',
-  'Serie A',
-  'Bundesliga',
-  'Ligue 1',
-  'Champions League'
+  {
+    name: 'Premier League',
+    code: 'PL',
+    country: 'England'
+  },
+  {
+    name: 'Championship',
+    code: 'ELC',
+    country: 'England'
+  },
+  {
+    name: 'Primera Division',
+    code: 'PD',
+    country: 'Spain'
+  },
+  {
+    name: 'Serie A',
+    code: 'SA',
+    country: 'Italy'
+  },
+  {
+    name: 'Bundesliga',
+    code: 'BL1',
+    country: 'Germany'
+  },
+  {
+    name: 'Ligue 1',
+    code: 'FL1',
+    country: 'France'
+  },
+  {
+    name: 'Eredivisie',
+    code: 'DED',
+    country: 'Netherlands'
+  },
+  {
+    name: 'Primeira Liga',
+    code: 'PPL',
+    country: 'Portugal'
+  },
+  {
+    name: 'Campeonato Brasileiro Série A',
+    code: 'BSA',
+    country: 'Brazil'
+  },
+  {
+    name: 'UEFA Champions League',
+    code: 'CL',
+    country: 'Europe'
+  },
+  {
+    name: 'Copa Libertadores',
+    code: 'CLI',
+    country: 'South America'
+  }
 ];
 
 const markets = [
   {
     title: 'Match Result',
-    description: '1X2 probability'
+    description: 'Home, draw & away probabilities'
   },
   {
     title: 'Over / Under',
-    description: 'Goal totals'
+    description: 'Goal total probabilities'
   },
   {
     title: 'BTTS',
     description: 'Both teams to score'
+  },
+  {
+    title: 'Corners',
+    description: 'Match corner analysis'
   }
 ];
 ---
@@ -28,19 +81,38 @@ const markets = [
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
+
     <meta
       name="description"
-      content="MatchMetric provides football statistics, match analysis and probability-based predictions."
+      content="MatchMetric provides football statistics, match analysis and probability-based predictions across major competitions."
     />
-    <meta name="robots" content="index, follow" />
+
+    <meta
+      name="robots"
+      content="index, follow"
+    />
+
+    <link
+      rel="canonical"
+      href="https://football-predictions.mainnewz247.workers.dev/"
+    />
+
     <title>MatchMetric — Football Statistics & Predictions</title>
   </head>
 
   <body>
     <header class="site-header">
       <div class="container header-inner">
-        <a href="/" class="brand" aria-label="MatchMetric home">
+        <a
+          href="/"
+          class="brand"
+          aria-label="MatchMetric home"
+        >
           <span class="brand-mark">M</span>
           <span class="brand-name">MatchMetric</span>
         </a>
@@ -52,7 +124,11 @@ const markets = [
           <a href="#methodology">Methodology</a>
         </nav>
 
-        <button class="menu-button" aria-label="Open navigation">
+        <button
+          class="menu-button"
+          aria-label="Open navigation"
+          type="button"
+        >
           <span></span>
           <span></span>
         </button>
@@ -60,10 +136,13 @@ const markets = [
     </header>
 
     <main>
+      <!-- HERO -->
       <section class="hero">
         <div class="container hero-grid">
           <div class="hero-copy">
-            <p class="eyebrow">FOOTBALL DATA & MATCH ANALYSIS</p>
+            <p class="eyebrow">
+              FOOTBALL DATA & MATCH ANALYSIS
+            </p>
 
             <h1>
               The numbers<br />
@@ -71,16 +150,22 @@ const markets = [
             </h1>
 
             <p class="hero-description">
-              Football statistics, team form and probability-based match
-              predictions — presented clearly, without the noise.
+              Football statistics, team form and probability-based
+              match predictions — presented clearly, without the noise.
             </p>
 
             <div class="hero-actions">
-              <a class="button button-primary" href="#predictions">
+              <a
+                class="button button-primary"
+                href="#predictions"
+              >
                 Explore predictions
               </a>
 
-              <a class="button button-secondary" href="#methodology">
+              <a
+                class="button button-secondary"
+                href="#methodology"
+              >
                 How it works
               </a>
             </div>
@@ -89,41 +174,50 @@ const markets = [
           <div class="hero-panel">
             <div class="panel-header">
               <span>DATA STATUS</span>
+
               <span class="status">
                 <i></i>
-                BUILDING
+                LIVE DATA
               </span>
             </div>
 
             <div class="panel-body">
               <div class="metric">
                 <span>Competitions</span>
-                <strong>Coming soon</strong>
+                <strong>{leagues.length}</strong>
               </div>
 
               <div class="metric">
-                <span>Matches</span>
-                <strong>Coming soon</strong>
+                <span>Data source</span>
+                <strong>Football-data.org</strong>
               </div>
 
               <div class="metric">
-                <span>Predictions</span>
-                <strong>Coming soon</strong>
+                <span>Analysis</span>
+                <strong>In development</strong>
               </div>
             </div>
 
             <div class="panel-footer">
-              Live football data integration is currently being developed.
+              MatchMetric uses football data to build statistical
+              match analysis and probability-based predictions.
             </div>
           </div>
         </div>
       </section>
 
-      <section class="section" id="predictions">
+      <!-- PREDICTIONS -->
+      <section
+        class="section"
+        id="predictions"
+      >
         <div class="container">
           <div class="section-heading">
             <div>
-              <p class="eyebrow">PREDICTION MARKETS</p>
+              <p class="eyebrow">
+                PREDICTION MARKETS
+              </p>
+
               <h2>What we analyse</h2>
             </div>
           </div>
@@ -132,11 +226,12 @@ const markets = [
             {markets.map((market, index) => (
               <article class="market-card">
                 <div class="market-number">
-                  0{index + 1}
+                  {String(index + 1).padStart(2, '0')}
                 </div>
 
                 <div>
                   <h3>{market.title}</h3>
+
                   <p>{market.description}</p>
                 </div>
 
@@ -147,48 +242,78 @@ const markets = [
         </div>
       </section>
 
-      <section class="section matches-section" id="matches">
+      <!-- MATCH CENTRE -->
+      <section
+        class="section matches-section"
+        id="matches"
+      >
         <div class="container">
           <div class="section-heading">
             <div>
-              <p class="eyebrow">MATCH CENTRE</p>
+              <p class="eyebrow">
+                MATCH CENTRE
+              </p>
+
               <h2>Today's matches</h2>
             </div>
 
-            <span class="coming-label">DATA INTEGRATION IN PROGRESS</span>
+            <span class="coming-label">
+              LIVE DATA LAYER
+            </span>
           </div>
 
           <div class="empty-state">
             <div class="empty-icon">M</div>
 
-            <h3>Match data is coming soon</h3>
+            <h3>
+              Match analysis is being prepared
+            </h3>
 
             <p>
-              We're connecting MatchMetric to a reliable football data source.
-              Real fixtures, results and statistics will appear here once the
-              data layer is ready.
+              MatchMetric is connected to its football data
+              source. Fixtures, results, team form and statistical
+              analysis will appear here as the match engine is
+              developed.
             </p>
           </div>
         </div>
       </section>
 
-      <section class="section leagues-section" id="leagues">
+      <!-- LEAGUES -->
+      <section
+        class="section leagues-section"
+        id="leagues"
+      >
         <div class="container">
           <div class="section-heading">
             <div>
-              <p class="eyebrow">COMPETITIONS</p>
-              <h2>Popular leagues</h2>
+              <p class="eyebrow">
+                COMPETITIONS
+              </p>
+
+              <h2>Football competitions</h2>
             </div>
           </div>
 
           <div class="league-list">
             {leagues.map((league, index) => (
-              <a href="/" class="league-row">
+              <a
+                href={`/league/${league.code.toLowerCase()}`}
+                class="league-row"
+              >
                 <span class="league-index">
                   {String(index + 1).padStart(2, '0')}
                 </span>
 
-                <strong>{league}</strong>
+                <div class="league-name">
+                  <strong>{league.name}</strong>
+
+                  <span>{league.country}</span>
+                </div>
+
+                <span class="league-code">
+                  {league.code}
+                </span>
 
                 <span class="league-arrow">→</span>
               </a>
@@ -197,29 +322,41 @@ const markets = [
         </div>
       </section>
 
-      <section class="methodology" id="methodology">
+      <!-- METHODOLOGY -->
+      <section
+        class="methodology"
+        id="methodology"
+      >
         <div class="container methodology-grid">
           <div>
-            <p class="eyebrow">OUR APPROACH</p>
+            <p class="eyebrow">
+              OUR APPROACH
+            </p>
 
             <h2>
-              Football analysis built around data, not promises.
+              Football analysis built around data,
+              not promises.
             </h2>
           </div>
 
           <div class="methodology-copy">
             <p>
-              MatchMetric is being built around football statistics,
-              historical performance and probability-based analysis.
+              MatchMetric is being built around football
+              statistics, historical performance, team form
+              and probability-based analysis.
             </p>
 
             <p>
-              Predictions will never be presented as guarantees. Every
-              assessment will be based on available data and clearly
-              identified as a statistical prediction.
+              Predictions will never be presented as
+              guarantees. Each assessment will be based on
+              available football data and clearly identified
+              as a statistical prediction.
             </p>
 
-            <a href="/" class="text-link">
+            <a
+              href="/methodology"
+              class="text-link"
+            >
               Read our methodology →
             </a>
           </div>
@@ -227,10 +364,16 @@ const markets = [
       </section>
     </main>
 
+    <!-- FOOTER -->
     <footer>
       <div class="container footer-top">
         <div>
-          <a href="/" class="footer-brand">MatchMetric</a>
+          <a
+            href="/"
+            class="footer-brand"
+          >
+            MatchMetric
+          </a>
 
           <p>
             Football statistics, predictions & match analysis.
@@ -238,16 +381,26 @@ const markets = [
         </div>
 
         <div class="footer-links">
-          <a href="/">About</a>
-          <a href="/">Methodology</a>
-          <a href="/">Privacy</a>
-          <a href="/">Terms</a>
+          <a href="/about">About</a>
+          <a href="/methodology">Methodology</a>
+          <a href="/privacy">Privacy</a>
+          <a href="/terms">Terms</a>
+          <a href="/contact">Contact</a>
         </div>
       </div>
 
       <div class="container footer-bottom">
-        <span>© 2026 MatchMetric</span>
-        <span>Predictions are statistical assessments, not guarantees.</span>
+        <span>
+          © 2026 MatchMetric
+        </span>
+
+        <span>
+          Predictions are statistical assessments, not guarantees.
+        </span>
+
+        <span>
+          Data provided by football-data.org
+        </span>
       </div>
     </footer>
   </body>
@@ -478,6 +631,7 @@ const markets = [
 
   .metric strong {
     font-size: 12px;
+    text-align: right;
   }
 
   .panel-footer {
@@ -508,7 +662,7 @@ const markets = [
 
   .market-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     border-top: 1px solid #d7d7d2;
     border-left: 1px solid #d7d7d2;
   }
@@ -542,6 +696,7 @@ const markets = [
     margin: 0;
     color: #777;
     font-size: 12px;
+    line-height: 1.5;
   }
 
   .arrow {
@@ -604,10 +759,11 @@ const markets = [
   }
 
   .league-row {
-    min-height: 66px;
+    min-height: 72px;
     display: grid;
-    grid-template-columns: 60px 1fr 40px;
+    grid-template-columns: 60px 1fr 70px 40px;
     align-items: center;
+    gap: 15px;
     border-bottom: 1px solid #d7d7d2;
     color: #171717;
     text-decoration: none;
@@ -623,8 +779,27 @@ const markets = [
     font-weight: 800;
   }
 
+  .league-name {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+
   .league-row strong {
     font-size: 14px;
+  }
+
+  .league-name span {
+    color: #888;
+    font-size: 11px;
+  }
+
+  .league-code {
+    color: #999;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-align: right;
   }
 
   .league-arrow {
@@ -702,6 +877,7 @@ const markets = [
 
   .footer-links {
     display: flex;
+    flex-wrap: wrap;
     gap: 25px;
   }
 
@@ -711,8 +887,12 @@ const markets = [
     font-size: 12px;
   }
 
+  .footer-links a:hover {
+    color: #fff;
+  }
+
   .footer-bottom {
-    min-height: 55px;
+    min-height: 65px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -720,6 +900,20 @@ const markets = [
     border-top: 1px solid #292929;
     color: #666;
     font-size: 10px;
+  }
+
+  @media (max-width: 900px) {
+    .market-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .hero-grid {
+      gap: 50px;
+    }
+
+    .methodology-grid {
+      gap: 60px;
+    }
   }
 
   @media (max-width: 760px) {
@@ -794,7 +988,21 @@ const markets = [
     }
 
     .league-row {
-      grid-template-columns: 40px 1fr 25px;
+      grid-template-columns: 35px 1fr 35px;
+      gap: 8px;
+    }
+
+    .league-code {
+      display: none;
+    }
+
+    .league-name {
+      display: block;
+    }
+
+    .league-name span {
+      display: block;
+      margin-top: 4px;
     }
 
     .methodology {
@@ -817,16 +1025,16 @@ const markets = [
     }
 
     .footer-links {
-      flex-wrap: wrap;
       gap: 18px;
     }
 
     .footer-bottom {
-      min-height: 75px;
+      min-height: auto;
       align-items: flex-start;
       justify-content: center;
       flex-direction: column;
-      padding: 15px 0;
+      padding: 18px 0;
+      line-height: 1.6;
     }
   }
 </style>
