@@ -6,9 +6,14 @@
   "scripts": {
     "build": "astro build",
     "dev": "astro dev",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "deploy": "bun run build && wrangler deploy"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "latest",
     "astro": "latest"
+  },
+  "devDependencies": {
+    "wrangler": "latest"
   }
 }
